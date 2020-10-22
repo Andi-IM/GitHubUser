@@ -1,42 +1,59 @@
 package live.andiirham.githubuser
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.TextView
-import de.hdodenhof.circleimageview.CircleImageView
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import kotlinx.android.synthetic.main.item_user.view.*
 
-class UserAdapter internal constructor(private val context: Context) : BaseAdapter() {
-    internal var users = arrayListOf<User>()
+class UserAdapter(private val listUsers: ArrayList<User>) :
+    RecyclerView.Adapter<UserAdapter.ListViewHolder>() {
 
-    override fun getItem(position: Int): Any = users[position]
-
-    override fun getItemId(position: Int): Long = position.toLong()
-
-    override fun getCount(): Int = users.size
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        var itemView = convertView
-        if (itemView == null){
-            itemView = LayoutInflater.from(context).inflate(R.layout.item_user, parent, false)
-        }
-        var viewHolder = ViewHolder(itemView as View)
-        val user = getItem(position) as User
-        viewHolder.bind(user)
-        return itemView
+    private var onItemClickCallback: OnItemClickCallback? = null
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
     }
 
-    private inner class ViewHolder internal constructor(view: View) {
-        private val txtName: TextView = view.findViewById(R.id.tv_username)
-        private val txtCompany: TextView = view.findViewById(R.id.tv_company)
-        private val userAvatar: CircleImageView = view.findViewById(R.id.img_avatar)
+    fun setData(items: ArrayList<User>) {
+        listUsers.clear()
+        listUsers.addAll(items)
+        notifyDataSetChanged()
+    }
 
-        internal fun bind(user: User) {
-            txtName.text = user.username
-            txtCompany.text = user.company
-            userAvatar.setImageResource(user.avatar)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): ListViewHolder {
+        val mView = LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false)
+        return ListViewHolder(mView)
+    }
+
+    override fun getItemCount(): Int = listUsers.size
+    override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
+        holder.bind(listUsers[position])
+    }
+
+    inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(user: User) {
+            with(itemView) {
+                Glide.with(itemView.context)
+                    .load(user.avatar)
+                    .apply(RequestOptions().override(55, 55))
+                    .into(img_avatar)
+                tv_username.text = user.name
+                tv_company.text = user.company
+                itemView.setOnClickListener { onItemClickCallback?.onItemClicked(user) }
+
+            }
         }
+    }
+
+    interface OnItemClickCallback {
+        fun onItemClicked(data: User)
     }
 }
+
+
+

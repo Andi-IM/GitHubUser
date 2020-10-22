@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GitHubUser</string>
+    <string name="repositories">%1$s repositori</string>
+    <string name="followers">%1$s pengikut</string>
+    <string name="following">• %1$s mengikuti</string>
+    <string name="avatar_of_image">avatar dari gambar</string>
+    <string name="language_settings">Pengaturan Bahasa</string>
+    <string name="search_user">Cari Pengguna</string>
+    <string name="detail_user">Detail Pengguna</string>
+    <string name="home">Pencarian User Github</string>
+    <string name="tab_text_1">Pengikut</string>
+    <string name="tab_text_2">Mengikuti</string>
+</resources>

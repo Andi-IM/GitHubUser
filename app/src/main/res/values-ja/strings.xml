@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GitHubUser</string>
+    <string name="repositories">%1$s　りぽじとり</string>
+    <string name="followers">%1$s　フォロワー</string>
+    <string name="following">• %1$s　フォロー</string>
+    <string name="avatar_of_image">画像のアバター</string>
+    <string name="language_settings">言語設定</string>
+    <string name="search_user">ユーザーを検索</string>
+    <string name="detail_user">ユーザーの書斎</string>
+    <string name="home">Github User\'s Search</string>
+    <string name="tab_text_1">フォロワー</string>
+    <string name="tab_text_2">フォロー</string>
+</resources>

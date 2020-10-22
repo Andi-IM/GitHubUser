@@ -1,11 +1,17 @@
 <resources>
     <string name="app_name">GitHubUser</string>
-    <string name="dev_name">Andi Irham</string>
+    <string name="dev_name" translatable="false">Andi Irham</string>
     <!--  using varargs of type Object: getString(int, java.lang.Object..)  -->
     <string name="repositories">%1$s repositories</string>
     <string name="followers">%1$s followers</string>
     <string name="following">• %1$s following</string>
     <string name="avatar_of_image">Avatar of image</string>
+    <string name="language_settings">language settings</string>
+    <string name="search_user">Search user</string>
+    <string name="detail_user">Detail User</string>
+    <string name="home">Github User\'s Search</string>
+    <string name="tab_text_1">Followers</string>
+    <string name="tab_text_2">Following</string>
 
     <string-array name="username">
         <item>JakeWharton</item>
@@ -110,5 +116,7 @@
         <item>@drawable/user9</item>
         <item>@drawable/user10</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
 
 </resources>
