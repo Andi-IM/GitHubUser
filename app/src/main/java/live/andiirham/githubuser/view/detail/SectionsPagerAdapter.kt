@@ -1,4 +1,4 @@
-package live.andiirham.githubuser.detail
+package live.andiirham.githubuser.view.detail
 
 import android.content.Context
 import androidx.annotation.Nullable
@@ -13,12 +13,13 @@ class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager) :
 
     @StringRes
     private val TAB_TITLES = intArrayOf(R.string.tab_text_1, R.string.tab_text_2)
+    var username: String? = null
 
     override fun getItem(position: Int): Fragment {
         var fragment: Fragment? = null
         when (position) {
-            0 -> fragment = FollowersFragment()
-            1 -> fragment = FollowingFragment()
+            0 -> fragment = username?.let { FollowersFragment.newInstance(it) }
+            1 -> fragment = username?.let { FollowingFragment.newInstance(it) }
         }
         return fragment as Fragment
     }

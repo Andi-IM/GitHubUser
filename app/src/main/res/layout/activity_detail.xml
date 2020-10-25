@@ -5,9 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".detail.DetailActivity">
+    tools:context=".view.detail.DetailActivity">
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ProgressBar
+        android:id="@+id/detailProgressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone" />
 
     <LinearLayout
+        android:id="@+id/detailLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -21,36 +34,36 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/img_avatar"
+                android:id="@+id/img_avatar_detail"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                tools:src="@drawable/user1"
+                tools:src="@android:color/darker_gray"
                 android:contentDescription="@string/avatar_of_image" />
 
             <TextView
-                android:id="@+id/user_name"
+                android:id="@+id/tv_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:layout_marginStart="15dp"
                 android:textColor="@color/colorPrimaryDark"
-                android:layout_toEndOf="@+id/img_avatar"
+                android:layout_toEndOf="@+id/img_avatar_detail"
                 android:textSize="20sp"
                 tools:text="Andi Irham"/>
 
             <TextView
-                android:id="@+id/user_id"
+                android:id="@+id/tv_userId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="5dp"
-                android:layout_below="@+id/user_name"
-                android:layout_toEndOf="@+id/img_avatar"
+                android:layout_below="@+id/tv_name"
+                android:layout_toEndOf="@+id/img_avatar_detail"
                 tools:text="airhamm" />
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/tv_company"
+            android:id="@+id/tv_detail_company"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -74,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp">
             <TextView
-                android:id="@+id/tv_follow"
+                android:id="@+id/tv_followers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="10 followers"
@@ -88,7 +101,7 @@
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
                 android:textColor="@android:color/black"
-                android:layout_toEndOf="@+id/tv_follow"
+                android:layout_toEndOf="@+id/tv_followers"
                 tools:text="\u25CF 30 following" />
         </RelativeLayout>
 
