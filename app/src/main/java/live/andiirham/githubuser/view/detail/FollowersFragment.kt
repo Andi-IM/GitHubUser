@@ -72,7 +72,7 @@ class FollowersFragment : Fragment() {
                 tv_nofollowers.text = getString(R.string.no_followers)
 
                 val errorCode = FollowersViewModel.errorCode
-                if (errorCode?.isNotBlank()!!) {
+                if (!errorCode.isBlank()) {
                     Toast.makeText(
                         activity,
                         "Followers Tab Error $errorCode",

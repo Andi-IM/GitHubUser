@@ -16,7 +16,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
-    <string name="silahkan_klik_tombol_search_untuk_mencari_user">Click Serach Button to Find the Users</string>
+    <string name="silahkan_klik_tombol_search_untuk_mencari_user">Click Search Button to Find the Users</string>
     <string name="no_followers">No Followers :(</string>
     <string name="no_following">No one Followed</string>
 

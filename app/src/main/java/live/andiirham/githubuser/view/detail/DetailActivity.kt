@@ -138,11 +138,11 @@ class DetailActivity : AppCompatActivity() {
     private fun showLoading(state: Boolean) {
         if (state) {
             detailProgressBar.visibility = View.VISIBLE
-            detailLayout.visibility = View.GONE
+//            detailLayout.visibility = View.GONE
             view_pager.visibility = View.GONE
         } else {
             detailProgressBar.visibility = View.GONE
-            detailLayout.visibility = View.VISIBLE
+//            detailLayout.visibility = View.VISIBLE
             view_pager.visibility = View.VISIBLE
         }
     }

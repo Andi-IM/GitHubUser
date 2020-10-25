@@ -72,11 +72,10 @@ class FollowingFragment : Fragment() {
 
                 // Error Showing
                 val errorCode = FollowingViewModel.errorCode
-                val errMessage = FollowingViewModel.error
-                if (errorCode >= 0) {
+                if (!errorCode.isBlank()) {
                     Toast.makeText(
                         activity,
-                        "Following Tab Error $errMessage",
+                        "Following Tab Error $errorCode",
                         Toast.LENGTH_LONG
                     ).show()
                 }

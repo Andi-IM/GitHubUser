@@ -24,8 +24,7 @@ class FollowingViewModel : ViewModel() {
     companion object {
         private val TAG = FollowersViewModel::class.java.simpleName
         private const val TOKEN = "64224e2a71fbbd7965657eab4c2c4e04315bce1e"
-        var error: String? = null
-        var errorCode: Int = 0
+        var errorCode: String = ""
     }
 
     fun getUser(): LiveData<ArrayList<User>> = listUsers
@@ -61,15 +60,14 @@ class FollowingViewModel : ViewModel() {
                         Log.d("onResponse: ", "${listItems.size} followers added")
                     } catch (e: Exception) {
                         Log.d("onResponse: ", e.message.toString())
-                        error = e.message
+                        errorCode = e.message.toString()
                         listUsers.postValue(null)
                     }
                 }
 
                 override fun onError(anError: ANError?) {
                     Log.d(TAG, "onError: ${anError?.errorDetail}")
-                    error = "${anError?.errorCode.toString()} : ${anError?.errorDetail}"
-                    errorCode = Integer.parseInt(anError?.errorCode.toString())
+                    errorCode = "${anError?.errorCode.toString()} : ${anError?.errorDetail}"
                     listUsers.postValue(null)
                 }
             })
