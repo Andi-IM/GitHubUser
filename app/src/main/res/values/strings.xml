@@ -6,8 +6,9 @@
     <string name="followers">%1$s followers</string>
     <string name="following">• %1$s following</string>
     <string name="avatar_of_image">Avatar of image</string>
-    <string name="language_settings">language settings</string>
+    <string name="language_settings">Language Settings</string>
     <string name="search_user">Search user</string>
+    <string name="query_hint">Search the Username : </string>
     <string name="detail_user">Detail User</string>
     <string name="home">Github User\'s Search</string>
     <string name="tab_text_1">Followers</string>

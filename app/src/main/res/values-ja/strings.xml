@@ -14,4 +14,5 @@
     <string name="silahkan_klik_tombol_search_untuk_mencari_user">ユーザーを検索するには、[検索]ボタンをクリックしてください。</string>
     <string name="no_followers">誰もフォローしなかった</string>
     <string name="no_following">何も続かなかった</string>
+    <string name="query_hint">ユーザー名を検索：</string>
 </resources>

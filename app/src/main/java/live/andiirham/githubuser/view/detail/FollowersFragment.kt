@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_followers.*
-import kotlinx.android.synthetic.main.fragment_following.*
 import live.andiirham.githubuser.R
 import live.andiirham.githubuser.model.User
 import live.andiirham.githubuser.viewmodel.FollowersViewModel
@@ -25,12 +25,12 @@ class FollowersFragment : Fragment() {
             fragment.arguments = bundle
             return fragment
         }
-
     }
 
     private var username: String? = null
     private lateinit var followersViewModel: FollowersViewModel
     private val list = ArrayList<User>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { this.username = it.getString(ARG_USERNAME) }
@@ -51,10 +51,8 @@ class FollowersFragment : Fragment() {
         rv_followers.setHasFixedSize(true)
         followersViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())
             .get(FollowersViewModel::class.java)
-
-        pb_followers.visibility = View.VISIBLE
-
         followersViewModel.setUser(username)
+        getProgressbar(true)
         showList()
     }
 
@@ -64,31 +62,33 @@ class FollowersFragment : Fragment() {
         adapter.notifyDataSetChanged()
         rv_followers.adapter = adapter
 
-
-
+        // Getting Data
         followersViewModel.getUser().observe(viewLifecycleOwner, Observer { userItems ->
             if (userItems != null) {
                 adapter.setData(userItems)
+                getProgressbar(false)
             } else {
                 rv_followers.visibility = View.GONE
                 tv_nofollowers.text = getString(R.string.no_followers)
+
+                val errorCode = FollowersViewModel.errorCode
+                if (errorCode?.isNotBlank()!!) {
+                    Toast.makeText(
+                        activity,
+                        "Followers Tab Error $errorCode",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+                getProgressbar(false)
             }
         })
     }
 
+    // Show Loading
     private fun getProgressbar(state: Boolean) {
         if (state) {
-            if (view != null) {
-                if (pb_followers != null) {
-                    pb_followers.visibility = View.VISIBLE
-                }
-            }
-        } else {
-            if (view != null) {
-                if (pb_followers != null) {
-                    pb_followers.visibility = View.GONE
-                }
-            }
-        }
+            pb_followers.visibility = View.VISIBLE
+        } else pb_followers.visibility = View.GONE
     }
 }

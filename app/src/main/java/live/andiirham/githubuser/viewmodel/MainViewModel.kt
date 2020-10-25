@@ -25,6 +25,7 @@ class MainViewModel : ViewModel() {
 
     companion object {
         private val TAG = MainViewModel::class.java.simpleName
+        var errorCode: String? = null
         private const val TOKEN = "64224e2a71fbbd7965657eab4c2c4e04315bce1e"
     }
 
@@ -69,6 +70,7 @@ class MainViewModel : ViewModel() {
 
                 override fun onError(anError: ANError?) {
                     Log.d("onError: ", "${anError?.errorCode.toString()} : ${anError?.errorDetail}")
+                    errorCode = "${anError?.errorCode.toString()} : ${anError?.errorDetail}"
                     listUsers.postValue(null)
                 }
             })

@@ -13,7 +13,7 @@ import org.json.JSONArray
 import java.util.concurrent.TimeUnit
 
 class FollowingViewModel : ViewModel() {
-    val listUsers = MutableLiveData<ArrayList<User>>()
+    private val listUsers = MutableLiveData<ArrayList<User>>()
 
     private val okHttpClient = OkHttpClient().newBuilder()
         .connectTimeout(120, TimeUnit.SECONDS)
@@ -24,11 +24,11 @@ class FollowingViewModel : ViewModel() {
     companion object {
         private val TAG = FollowersViewModel::class.java.simpleName
         private const val TOKEN = "64224e2a71fbbd7965657eab4c2c4e04315bce1e"
+        var error: String? = null
+        var errorCode: Int = 0
     }
 
-    fun getUser(): LiveData<ArrayList<User>> {
-        return listUsers
-    }
+    fun getUser(): LiveData<ArrayList<User>> = listUsers
 
     fun setUser(username: String?) {
         // Request API
@@ -42,33 +42,36 @@ class FollowingViewModel : ViewModel() {
             .getAsJSONArray(object : JSONArrayRequestListener {
                 override fun onResponse(response: JSONArray?) {
                     try {
-
-                        for (i in 0 until response!!.length()) {
-                            val users = response.getJSONObject(i)
-                            val user = User(
-                                users.getString("login"),
-                                users.getString("avatar_url"),
-                                users.getString("url")
-                            )
-                            // Log.d(TAG, "onResponse: Username List = ${user.username.toString()}")
-                            Log.d(
-                                TAG,
-                                "onResponse: INI DAFTAR FOLLOWERSNYA! = ${users.getString("login")}"
-                            )
-                            listItems.add(user)
-                        }
+                        if (response?.length()!! > 0) {
+                            for (i in 0 until response.length()) {
+                                val users = response.getJSONObject(i)
+                                val user = User(
+                                    users.getString("login"),
+                                    users.getString("avatar_url"),
+                                    users.getString("url")
+                                )
+                                Log.d(
+                                    TAG,
+                                    "onResponse: INI DAFTAR FOLLOWING! = ${users.getString("login")}"
+                                )
+                                listItems.add(user)
+                                listUsers.postValue(listItems)
+                            }
+                        } else listUsers.postValue(null)
                         Log.d("onResponse: ", "${listItems.size} followers added")
                     } catch (e: Exception) {
                         Log.d("onResponse: ", e.message.toString())
-                        listItems.clear()
+                        error = e.message
+                        listUsers.postValue(null)
                     }
                 }
 
                 override fun onError(anError: ANError?) {
                     Log.d(TAG, "onError: ${anError?.errorDetail}")
-                    listItems.clear()
+                    error = "${anError?.errorCode.toString()} : ${anError?.errorDetail}"
+                    errorCode = Integer.parseInt(anError?.errorCode.toString())
+                    listUsers.postValue(null)
                 }
             })
-        listUsers.postValue(listItems)
     }
 }

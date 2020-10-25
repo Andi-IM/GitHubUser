@@ -14,4 +14,5 @@
     <string name="silahkan_klik_tombol_search_untuk_mencari_user">Silahkan Klik Tombol Search untuk mencari user!</string>
     <string name="no_followers">Tak Ada yang mengikuti :(</string>
     <string name="no_following">Tak ada yang diikuti</string>
+    <string name="query_hint">Cari nama pengguna :</string>
 </resources>
