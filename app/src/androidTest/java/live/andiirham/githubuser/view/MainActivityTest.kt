@@ -3,6 +3,7 @@ package live.andiirham.githubuser.view
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.rule.ActivityTestRule
+import live.andiirham.githubuser.MainActivity
 import live.andiirham.githubuser.R
 import org.junit.Rule
 import org.junit.Test

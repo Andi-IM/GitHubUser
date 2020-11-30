@@ -1,4 +1,4 @@
-package live.andiirham.githubuser.view.detail
+package live.andiirham.githubuser
 
 import android.content.Context
 import android.os.Bundle
@@ -13,8 +13,8 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import kotlinx.android.synthetic.main.activity_detail.*
-import live.andiirham.githubuser.R
+import live.andiirham.githubuser.adapters.SectionsPagerAdapter
+import live.andiirham.githubuser.databinding.ActivityDetailBinding
 import live.andiirham.githubuser.language.App
 import live.andiirham.githubuser.language.LocalizationUtil
 import live.andiirham.githubuser.model.DetailUser
@@ -27,6 +27,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private var baseContextWrappingDelegate: AppCompatDelegate? = null
+    private lateinit var binding: ActivityDetailBinding
 
     override fun getDelegate() =
         baseContextWrappingDelegate ?: BaseContextWrappingDelegate(super.getDelegate()).apply {
@@ -35,7 +36,9 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail)
+        binding = ActivityDetailBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         supportActionBar?.title = resources.getString(R.string.detail_user)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -61,28 +64,29 @@ class DetailActivity : AppCompatActivity() {
                         Glide.with(this@DetailActivity)
                             .load(response?.avatar_url)
                             .apply(RequestOptions().override(55, 55))
-                            .into(img_avatar_detail)
+                            .into(binding.imgAvatarDetail)
 
                         // If name = null or Empty
-                        if (response?.name.isNullOrEmpty()) tv_name.text = response?.username
-                        else tv_name.text = response?.name
+                        if (response?.name.isNullOrEmpty()) binding.tvName.text = response?.username
+                        else binding.tvName.text = response?.name
 
-                        tv_userId.text = response?.username
+                        binding.tvUserId.text = response?.username
 
-                        if (response?.location.isNullOrEmpty()) tv_location.visibility = View.GONE
-                        else tv_location.text = response?.location
+                        if (response?.location.isNullOrEmpty()) binding.tvLocation.visibility =
+                            View.GONE
+                        else binding.tvLocation.text = response?.location
 
-                        tv_repo.text =
+                        binding.tvRepo.text =
                             getString(R.string.repositories, response?.repository.toString())
 
-                        if (!response?.company.isNullOrEmpty()) tv_detail_company.text =
-                            response?.company
-                        else tv_detail_company.visibility = View.GONE
+                        if (!response?.company.isNullOrEmpty())
+                            binding.tvDetailCompany.text = response?.company
+                        else binding.tvDetailCompany.visibility = View.GONE
 
-                        tv_followers.text =
+                        binding.tvFollowers.text =
                             getString(R.string.followers, response?.followers.toString())
 
-                        tv_following.text =
+                        binding.tvFollowing.text =
                             getString(R.string.following, response?.following.toString())
 
                         showLoading(false)
@@ -121,10 +125,13 @@ class DetailActivity : AppCompatActivity() {
 
         // Tab Followers and Following
         val sectionsPagerAdapter =
-            SectionsPagerAdapter(this, supportFragmentManager)
+            SectionsPagerAdapter(
+                this,
+                supportFragmentManager
+            )
         sectionsPagerAdapter.username = intent.getStringExtra(EXTRA_USERNAME)
-        view_pager.adapter = sectionsPagerAdapter
-        tabs.setupWithViewPager(view_pager)
+        binding.viewPager.adapter = sectionsPagerAdapter
+        binding.tabs.setupWithViewPager(binding.viewPager)
 
     }
 
@@ -137,13 +144,11 @@ class DetailActivity : AppCompatActivity() {
     // Loading
     private fun showLoading(state: Boolean) {
         if (state) {
-            detailProgressBar.visibility = View.VISIBLE
-//            detailLayout.visibility = View.GONE
-            view_pager.visibility = View.GONE
+            binding.detailProgressBar.visibility = View.VISIBLE
+            binding.viewPager.visibility = View.GONE
         } else {
-            detailProgressBar.visibility = View.GONE
-//            detailLayout.visibility = View.VISIBLE
-            view_pager.visibility = View.VISIBLE
+            binding.detailProgressBar.visibility = View.GONE
+            binding.viewPager.visibility = View.VISIBLE
         }
     }
 

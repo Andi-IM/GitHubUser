@@ -1,4 +1,4 @@
-package live.andiirham.githubuser.view
+package live.andiirham.githubuser
 
 import android.app.SearchManager
 import android.content.Context
@@ -15,12 +15,12 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.activity_main.*
-import live.andiirham.githubuser.R
+import live.andiirham.githubuser.adapters.OnItemClickCallback
+import live.andiirham.githubuser.adapters.UserAdapter
+import live.andiirham.githubuser.databinding.ActivityMainBinding
 import live.andiirham.githubuser.language.App
 import live.andiirham.githubuser.language.LocalizationUtil
 import live.andiirham.githubuser.model.User
-import live.andiirham.githubuser.view.detail.DetailActivity
 import live.andiirham.githubuser.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private var baseContextWrappingDelegate: AppCompatDelegate? = null
+    private lateinit var binding: ActivityMainBinding
 
     override fun getDelegate() =
         baseContextWrappingDelegate ?: BaseContextWrappingDelegate(super.getDelegate()).apply {
@@ -39,7 +40,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         supportActionBar?.title = applicationContext.getString(R.string.home)
 
@@ -75,7 +78,7 @@ class MainActivity : AppCompatActivity() {
 
                 mainViewModel.setUser(query)
                 // If query attempted / welcome message set HIDDEN
-                welcome.visibility = View.GONE
+                binding.welcome.visibility = View.GONE
                 return true
             }
 
@@ -98,14 +101,15 @@ class MainActivity : AppCompatActivity() {
 
     // Showing User
     private fun showList() {
-        rv_users.setHasFixedSize(true)
-        rv_users.layoutManager = LinearLayoutManager(this)
+        binding.rvUsers.setHasFixedSize(true)
+        binding.rvUsers.layoutManager = LinearLayoutManager(this)
 
-        val userAdapter = UserAdapter(list)
+        val userAdapter =
+            UserAdapter(list)
         userAdapter.notifyDataSetChanged()
 
         // connect the adapter
-        rv_users.adapter = userAdapter
+        binding.rvUsers.adapter = userAdapter
 
         // getting data
         mainViewModel.getUser().observe(this, Observer { userItems ->
@@ -120,11 +124,12 @@ class MainActivity : AppCompatActivity() {
         })
 
         if (list.isNotEmpty()) {
-            welcome.text = null
+            binding.welcome.text = null
         }
 
         // Click Listener
-        userAdapter.setOnItemClickCallback(object : OnItemClickCallback {
+        userAdapter.setOnItemClickCallback(object :
+            OnItemClickCallback {
             override fun onItemClicked(data: User) {
                 showSelectedUser(data)
             }
@@ -142,11 +147,11 @@ class MainActivity : AppCompatActivity() {
     // Loading Show when query submitted
     private fun showLoading(state: Boolean) {
         if (state) {
-            rv_users.visibility = View.GONE
-            progressBar.visibility = View.VISIBLE
+            binding.rvUsers.visibility = View.GONE
+            binding.progressBar.visibility = View.VISIBLE
         } else {
-            progressBar.visibility = View.GONE
-            rv_users.visibility = View.VISIBLE
+            binding.progressBar.visibility = View.GONE
+            binding.rvUsers.visibility = View.VISIBLE
         }
     }
 

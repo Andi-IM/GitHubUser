@@ -1,4 +1,4 @@
-package live.andiirham.githubuser.view.detail
+package live.andiirham.githubuser
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_followers.*
-import live.andiirham.githubuser.R
+import live.andiirham.githubuser.adapters.FollowAdapter
+import live.andiirham.githubuser.databinding.FragmentFollowersBinding
 import live.andiirham.githubuser.model.User
 import live.andiirham.githubuser.viewmodel.FollowersViewModel
 
@@ -29,6 +29,8 @@ class FollowersFragment : Fragment() {
 
     private var username: String? = null
     private lateinit var followersViewModel: FollowersViewModel
+    private var _binding: FragmentFollowersBinding? = null
+    private val binding get() = _binding!!
     private val list = ArrayList<User>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,14 +43,15 @@ class FollowersFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_followers, container, false)
+        _binding = FragmentFollowersBinding.inflate(inflater, container, false) // using binding
+        return binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        rv_followers.setHasFixedSize(true)
+        binding.rvFollowers.setHasFixedSize(true)
         followersViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())
             .get(FollowersViewModel::class.java)
         followersViewModel.setUser(username)
@@ -57,10 +60,10 @@ class FollowersFragment : Fragment() {
     }
 
     private fun showList() {
-        rv_followers.layoutManager = LinearLayoutManager(activity)
-        val adapter = FollowAdapter(this.context, list)
+        binding.rvFollowers.layoutManager = LinearLayoutManager(activity)
+        val adapter = FollowAdapter(list)
         adapter.notifyDataSetChanged()
-        rv_followers.adapter = adapter
+        binding.rvFollowers.adapter = adapter
 
         // Getting Data
         followersViewModel.getUser().observe(viewLifecycleOwner, Observer { userItems ->
@@ -68,8 +71,8 @@ class FollowersFragment : Fragment() {
                 adapter.setData(userItems)
                 getProgressbar(false)
             } else {
-                rv_followers.visibility = View.GONE
-                tv_nofollowers.text = getString(R.string.no_followers)
+                binding.rvFollowers.visibility = View.GONE
+                binding.tvNofollowers.text = getString(R.string.no_followers)
 
                 val errorCode = FollowersViewModel.errorCode
                 if (!errorCode.isBlank()) {
@@ -88,7 +91,12 @@ class FollowersFragment : Fragment() {
     // Show Loading
     private fun getProgressbar(state: Boolean) {
         if (state) {
-            pb_followers.visibility = View.VISIBLE
-        } else pb_followers.visibility = View.GONE
+            binding.pbFollowers.visibility = View.VISIBLE
+        } else binding.pbFollowers.visibility = View.GONE
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

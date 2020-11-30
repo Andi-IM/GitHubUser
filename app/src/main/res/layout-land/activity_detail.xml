@@ -8,7 +8,7 @@
     android:orientation="horizontal"
     android:overScrollMode="ifContentScrolls"
     android:scrollbars="vertical"
-    tools:context=".view.detail.DetailActivity">
+    tools:context=".DetailActivity">
 
     <LinearLayout
         android:id="@+id/detailLayout"

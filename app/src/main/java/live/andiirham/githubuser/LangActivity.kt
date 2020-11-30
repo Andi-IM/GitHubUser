@@ -1,4 +1,4 @@
-package live.andiirham.githubuser.view
+package live.andiirham.githubuser
 
 import android.content.Context
 import android.content.Intent
@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.BaseContextWrappingDelegate
-import live.andiirham.githubuser.R
+import live.andiirham.githubuser.databinding.ActivityLangBinding
 import live.andiirham.githubuser.language.App
 import live.andiirham.githubuser.language.LocalizationUtil
 
@@ -19,7 +19,7 @@ class LangActivity : AppCompatActivity() {
     private val languages = arrayListOf("English", "Bahasa Indonesia", "日本語")
 
     private var baseContextWrappingDelegate: AppCompatDelegate? = null
-
+    private lateinit var binding: ActivityLangBinding
     override fun getDelegate() =
         baseContextWrappingDelegate ?: BaseContextWrappingDelegate(super.getDelegate()).apply {
             baseContextWrappingDelegate = this
@@ -27,14 +27,17 @@ class LangActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_lang)
+        binding = ActivityLangBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         supportActionBar?.title = resources.getString(R.string.language_settings)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val listView: ListView = findViewById(R.id.lv_lang)
+        val listView: ListView = binding.lvLang  // findViewById(R.id.lv_lang)
         val adapter = ArrayAdapter<String>(
             this,
+            // using from stock libraries
             android.R.layout.simple_list_item_1,
             android.R.id.text1,
             languages

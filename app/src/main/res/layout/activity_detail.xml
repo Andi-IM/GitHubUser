@@ -8,7 +8,7 @@
     android:isScrollContainer="true"
     android:overScrollMode="ifContentScrolls"
     android:scrollbars="vertical"
-    tools:context=".view.detail.DetailActivity">
+    tools:context=".DetailActivity">
 
     <ProgressBar
         android:id="@+id/detailProgressBar"

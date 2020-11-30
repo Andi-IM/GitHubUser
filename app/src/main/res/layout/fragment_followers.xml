@@ -7,7 +7,7 @@
     android:id="@+id/fragment_followers"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".view.detail.FollowersFragment">
+    tools:context=".FollowersFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
