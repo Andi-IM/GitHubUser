@@ -15,4 +15,5 @@
     <string name="no_followers">誰もフォローしなかった</string>
     <string name="no_following">何も続かなかった</string>
     <string name="query_hint">ユーザー名を検索：</string>
+    <string name="settings">セッチング</string>
 </resources>
