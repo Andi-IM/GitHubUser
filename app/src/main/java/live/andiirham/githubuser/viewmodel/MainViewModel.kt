@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
 
 
 class MainViewModel : ViewModel() {
-
+    // TODO: 30/11/2020 Change api fetch to dagger 
     val listUsers = MutableLiveData<ArrayList<User>>()
 
     private val okHttpClient = OkHttpClient().newBuilder()

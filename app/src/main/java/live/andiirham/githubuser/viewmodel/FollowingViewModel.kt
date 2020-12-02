@@ -14,6 +14,7 @@ import org.json.JSONArray
 import java.util.concurrent.TimeUnit
 
 class FollowingViewModel : ViewModel() {
+    // TODO: 30/11/2020 change api fetch to dagger
     private val listUsers = MutableLiveData<ArrayList<User>>()
 
     private val okHttpClient = OkHttpClient().newBuilder()

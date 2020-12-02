@@ -19,6 +19,7 @@ import live.andiirham.githubuser.adapters.OnItemClickCallback
 import live.andiirham.githubuser.adapters.UserAdapter
 import live.andiirham.githubuser.databinding.ActivityMainBinding
 import live.andiirham.githubuser.language.App
+import live.andiirham.githubuser.language.LangActivity
 import live.andiirham.githubuser.language.LocalizationUtil
 import live.andiirham.githubuser.model.User
 import live.andiirham.githubuser.viewmodel.MainViewModel

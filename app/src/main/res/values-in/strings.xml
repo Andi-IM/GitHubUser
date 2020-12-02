@@ -16,4 +16,5 @@
     <string name="no_following">Tak ada yang diikuti</string>
     <string name="query_hint">Cari nama pengguna :</string>
     <string name="settings">Pengaturan</string>
+    <string name="favorite">favorit</string>
 </resources>

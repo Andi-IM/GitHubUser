@@ -10,6 +10,6 @@ class FavoriteActivity : AppCompatActivity() {
     }
 
     private fun fetchDataFromRoom() {
-
+        // TODO: 30/11/2020 Make some FETCHING DATA 
     }
 }

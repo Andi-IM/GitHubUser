@@ -1,4 +1,4 @@
-package live.andiirham.githubuser
+package live.andiirham.githubuser.language
 
 import android.content.Context
 import android.content.Intent
@@ -10,9 +10,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.BaseContextWrappingDelegate
+import live.andiirham.githubuser.MainActivity
+import live.andiirham.githubuser.R
 import live.andiirham.githubuser.databinding.ActivityLangBinding
-import live.andiirham.githubuser.language.App
-import live.andiirham.githubuser.language.LocalizationUtil
 
 class LangActivity : AppCompatActivity() {
 

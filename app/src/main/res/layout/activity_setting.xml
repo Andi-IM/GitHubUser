@@ -5,4 +5,5 @@
     android:layout_height="match_parent"
     tools:context=".SettingActivity">
 
+    <!-- TODO: Fill this layout for make setting page -> language and reminder   -->
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,6 +14,7 @@ import org.json.JSONArray
 import java.util.concurrent.TimeUnit
 
 class FollowersViewModel : ViewModel() {
+    // TODO: 30/11/2020 change api fetch to dagger hilt then take them in repository and get item
     val listUsers = MutableLiveData<ArrayList<User>>()
 
     private val okHttpClient = OkHttpClient().newBuilder()

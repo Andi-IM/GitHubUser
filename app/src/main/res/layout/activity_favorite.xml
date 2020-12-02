@@ -5,4 +5,5 @@
     android:layout_height="match_parent"
     tools:context=".FavoriteActivity">
 
+    <!-- TODO: Fill this layout for design list of favorite user-->
 </androidx.constraintlayout.widget.ConstraintLayout>
