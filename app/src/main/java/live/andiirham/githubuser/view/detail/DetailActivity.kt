@@ -14,6 +14,7 @@ import com.androidnetworking.interfaces.ParsedRequestListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_detail.*
+import live.andiirham.githubuser.BuildConfig.GITHUB_API
 import live.andiirham.githubuser.R
 import live.andiirham.githubuser.language.App
 import live.andiirham.githubuser.language.LocalizationUtil
@@ -51,7 +52,7 @@ class DetailActivity : AppCompatActivity() {
 
         // Getting API
         AndroidNetworking.get(url)
-            .addHeaders("Authorization", "token 64224e2a71fbbd7965657eab4c2c4e04315bce1e")
+            .addHeaders("Authorization", "token $GITHUB_API")
             .build()
             .getAsObject(DetailUser::class.java, object : ParsedRequestListener<DetailUser> {
                 override fun onResponse(response: DetailUser?) {
