@@ -6,8 +6,8 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class DetailUser(
-    var name: String?,
-    @SerializedName("login") var username: String?,
+    var name: String? = null,
+    @SerializedName("login") var username: String,
     var location: String?,
     @SerializedName("public_repos") var repository: Int,
     var company: String?,

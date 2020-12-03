@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import live.andiirham.githubuser.BuildConfig
 import live.andiirham.githubuser.model.User
 import okhttp3.OkHttpClient
 import org.json.JSONObject
@@ -26,7 +27,7 @@ class MainViewModel : ViewModel() {
     companion object {
         private val TAG = MainViewModel::class.java.simpleName
         var errorCode: String? = null
-        private const val TOKEN = "64224e2a71fbbd7965657eab4c2c4e04315bce1e"
+        private const val TOKEN = BuildConfig.GITHUB_API
     }
 
     fun getUser(): LiveData<ArrayList<User>> {

@@ -14,10 +14,13 @@ import com.androidnetworking.interfaces.ParsedRequestListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_detail.*
+import live.andiirham.githubuser.BuildConfig
 import live.andiirham.githubuser.R
+import live.andiirham.githubuser.databinding.ActivityDetailBinding
 import live.andiirham.githubuser.language.App
 import live.andiirham.githubuser.language.LocalizationUtil
 import live.andiirham.githubuser.model.DetailUser
+import live.andiirham.githubuser.view.adapter.SectionsPagerAdapter
 
 class DetailActivity : AppCompatActivity() {
     companion object {
@@ -27,6 +30,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private var baseContextWrappingDelegate: AppCompatDelegate? = null
+    private lateinit var binding: ActivityDetailBinding
 
     override fun getDelegate() =
         baseContextWrappingDelegate ?: BaseContextWrappingDelegate(super.getDelegate()).apply {
@@ -51,7 +55,7 @@ class DetailActivity : AppCompatActivity() {
 
         // Getting API
         AndroidNetworking.get(url)
-            .addHeaders("Authorization", "token 64224e2a71fbbd7965657eab4c2c4e04315bce1e")
+            .addHeaders("Authorization", "token ${BuildConfig.GITHUB_API}")
             .build()
             .getAsObject(DetailUser::class.java, object : ParsedRequestListener<DetailUser> {
                 override fun onResponse(response: DetailUser?) {
@@ -121,7 +125,10 @@ class DetailActivity : AppCompatActivity() {
 
         // Tab Followers and Following
         val sectionsPagerAdapter =
-            SectionsPagerAdapter(this, supportFragmentManager)
+            SectionsPagerAdapter(
+                this,
+                supportFragmentManager
+            )
         sectionsPagerAdapter.username = intent.getStringExtra(EXTRA_USERNAME)
         view_pager.adapter = sectionsPagerAdapter
         tabs.setupWithViewPager(view_pager)
@@ -138,11 +145,9 @@ class DetailActivity : AppCompatActivity() {
     private fun showLoading(state: Boolean) {
         if (state) {
             detailProgressBar.visibility = View.VISIBLE
-//            detailLayout.visibility = View.GONE
             view_pager.visibility = View.GONE
         } else {
             detailProgressBar.visibility = View.GONE
-//            detailLayout.visibility = View.VISIBLE
             view_pager.visibility = View.VISIBLE
         }
     }

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
+import live.andiirham.githubuser.BuildConfig
 import live.andiirham.githubuser.model.User
 import okhttp3.OkHttpClient
 import org.json.JSONArray
@@ -23,7 +24,7 @@ class FollowingViewModel : ViewModel() {
 
     companion object {
         private val TAG = FollowersViewModel::class.java.simpleName
-        private const val TOKEN = "64224e2a71fbbd7965657eab4c2c4e04315bce1e"
+        private const val TOKEN = BuildConfig.GITHUB_API
         var errorCode: String = ""
     }
 

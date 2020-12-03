@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_followers.*
 import live.andiirham.githubuser.R
 import live.andiirham.githubuser.model.User
+import live.andiirham.githubuser.view.adapter.FollowAdapter
 import live.andiirham.githubuser.viewmodel.FollowersViewModel
 
 class FollowersFragment : Fragment() {
@@ -58,7 +59,10 @@ class FollowersFragment : Fragment() {
 
     private fun showList() {
         rv_followers.layoutManager = LinearLayoutManager(activity)
-        val adapter = FollowAdapter(this.context, list)
+        val adapter = FollowAdapter(
+            this.context,
+            list
+        )
         adapter.notifyDataSetChanged()
         rv_followers.adapter = adapter
 

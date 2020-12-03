@@ -1,4 +1,4 @@
-package live.andiirham.githubuser.view
+package live.andiirham.githubuser.view.adapter
 
 import android.view.LayoutInflater
 import android.view.View
