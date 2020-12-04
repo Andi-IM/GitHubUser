@@ -8,7 +8,8 @@
     android:orientation="horizontal"
     android:overScrollMode="ifContentScrolls"
     android:scrollbars="vertical"
-    tools:context=".view.detail.DetailActivity">
+    tools:context=".view.detail.DetailActivity"
+    tools:viewBindingIgnore="true">
 
     <LinearLayout
         android:id="@+id/detailLayout"
@@ -124,27 +125,41 @@
             tools:text="20 Repository" />
     </LinearLayout>
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:minHeight="500dp"
-        android:overScrollMode="ifContentScrolls">
+        android:layout_height="wrap_content">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:minHeight="500dp"
+            android:overScrollMode="ifContentScrolls">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/darker_gray"
+                android:backgroundTintMode="add"
+                app:tabGravity="fill"
+                app:tabIndicatorAnimationDuration="500"
+                app:tabIndicatorColor="#000000"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="#000000"
+                app:tabTextColor="#fafafa" />
+        </androidx.viewpager.widget.ViewPager>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_fav"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/darker_gray"
-            android:backgroundTintMode="add"
-            app:tabGravity="fill"
-            app:tabIndicatorAnimationDuration="500"
-            app:tabIndicatorColor="#000000"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="#000000"
-            app:tabTextColor="#fafafa" />
-    </androidx.viewpager.widget.ViewPager>
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:contentDescription="fab"
+            android:elevation="6dp" />
+    </FrameLayout>
 </LinearLayout>
 
 

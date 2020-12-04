@@ -10,8 +10,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".view.settings.SettingsActivity"></activity>
+        <activity android:name=".view.favorites.FavoriteActivity" />
         <activity
-            android:name=".view.SplashScreenActivity"
+            android:name=".view.splashscreen.SplashScreenActivity"
             android:theme="@style/SplashScreenStyle">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.LangActivity" />
+        <activity android:name=".view.settings.LangActivity" />
         <activity android:name=".view.MainActivity" />
         <activity android:name=".view.detail.DetailActivity" />
     </application>

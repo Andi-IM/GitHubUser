@@ -23,6 +23,8 @@ import live.andiirham.githubuser.model.User
 import live.andiirham.githubuser.view.adapter.OnItemClickCallback
 import live.andiirham.githubuser.view.adapter.UserAdapter
 import live.andiirham.githubuser.view.detail.DetailActivity
+import live.andiirham.githubuser.view.favorites.FavoriteActivity
+import live.andiirham.githubuser.view.settings.SettingsActivity
 import live.andiirham.githubuser.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -92,11 +94,16 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    // Language settings
+    // Options : Settings and favorites
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.language_settings) {
-            val mIntent = Intent(this@MainActivity, LangActivity::class.java)
-            startActivity(mIntent)
+        when (item.itemId) {
+            R.id.settings -> {
+                startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
+            }
+
+            R.id.favorites -> {
+                startActivity(Intent(this@MainActivity, FavoriteActivity::class.java))
+            }
         }
         return true
     }

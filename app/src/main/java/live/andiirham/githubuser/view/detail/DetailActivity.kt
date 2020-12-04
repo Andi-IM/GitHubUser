@@ -8,15 +8,17 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.BaseContextWrappingDelegate
+import androidx.core.content.res.ResourcesCompat
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_detail.*
-import live.andiirham.githubuser.BuildConfig
+import live.andiirham.githubuser.BuildConfig.GITHUB_API
 import live.andiirham.githubuser.R
-import live.andiirham.githubuser.databinding.ActivityDetailBinding
+import live.andiirham.githubuser.db.entity.UserFavorite
+import live.andiirham.githubuser.db.helper.UserHelper
 import live.andiirham.githubuser.language.App
 import live.andiirham.githubuser.language.LocalizationUtil
 import live.andiirham.githubuser.model.DetailUser
@@ -26,11 +28,18 @@ class DetailActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_URL = "extra_url"
         const val EXTRA_USERNAME = "extra_username"
+        const val EXTRA_FAVORITE = "extra_favorite"
+        const val EXTRA_POSITION = "extra_position"
         private val TAG = DetailActivity::class.java.simpleName
+        const val REQUEST_ADD = 100
+        const val RESULT_ADD = 101
+        const val RESULT_DELETE = 301
     }
 
     private var baseContextWrappingDelegate: AppCompatDelegate? = null
-    private lateinit var binding: ActivityDetailBinding
+    private lateinit var userHelper: UserHelper
+    private var favorite: UserFavorite? = null
+    private var favoriteStatus: Boolean = false
 
     override fun getDelegate() =
         baseContextWrappingDelegate ?: BaseContextWrappingDelegate(super.getDelegate()).apply {
@@ -44,6 +53,13 @@ class DetailActivity : AppCompatActivity() {
         supportActionBar?.title = resources.getString(R.string.detail_user)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        // instance db
+        userHelper = UserHelper.getInstance(applicationContext)
+        userHelper.open()
+
+        favoriteStatus = intent.getBooleanExtra(EXTRA_FAVORITE, false)
+        favorite = UserFavorite()
+
         // getting url from MainActivity
         val url = intent.getStringExtra(EXTRA_URL)
         Log.d(TAG, "showDetail: Url = $url")
@@ -55,7 +71,7 @@ class DetailActivity : AppCompatActivity() {
 
         // Getting API
         AndroidNetworking.get(url)
-            .addHeaders("Authorization", "token ${BuildConfig.GITHUB_API}")
+            .addHeaders("Authorization", "token $GITHUB_API")
             .build()
             .getAsObject(DetailUser::class.java, object : ParsedRequestListener<DetailUser> {
                 override fun onResponse(response: DetailUser?) {
@@ -102,6 +118,9 @@ class DetailActivity : AppCompatActivity() {
                                     "Following: ${response?.following} \n " +
                                     "Img URL : ${response?.avatar_url}"
                         )
+                        favorite?.username = response?.username
+                        favorite?.avatarUrl = response?.avatar_url
+                        favorite?.url = url
 
                     } catch (e: Exception) {
                         Log.d(TAG, "onResponse: ${e.message} : ${e.stackTrace}")
@@ -123,16 +142,43 @@ class DetailActivity : AppCompatActivity() {
 
             })
 
+        setFavoriteStatus(favoriteStatus)
+        fab_fav.setOnClickListener {
+            favoriteStatus = !favoriteStatus
+            // database
+            setFavoriteStatus(favoriteStatus)
+        }
+
         // Tab Followers and Following
         val sectionsPagerAdapter =
-            SectionsPagerAdapter(
-                this,
-                supportFragmentManager
-            )
+            SectionsPagerAdapter(this, supportFragmentManager)
         sectionsPagerAdapter.username = intent.getStringExtra(EXTRA_USERNAME)
         view_pager.adapter = sectionsPagerAdapter
         tabs.setupWithViewPager(view_pager)
+    }
 
+    private fun setFavoriteStatus(favoriteStatus: Boolean) {
+        if (favoriteStatus) {
+            // change icons
+            favorite?.let { userHelper.insertFavUser(it) }
+            fab_fav.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.ic_baseline_favorite_white_24,
+                    null
+                )
+            )
+        } else {
+            // change icons
+            favorite?.username?.let { userHelper.deleteFavUser(it) }
+            fab_fav.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.ic_baseline_favorite_border_white_24,
+                    null
+                )
+            )
+        }
     }
 
     // Back key Pressing
@@ -146,9 +192,11 @@ class DetailActivity : AppCompatActivity() {
         if (state) {
             detailProgressBar.visibility = View.VISIBLE
             view_pager.visibility = View.GONE
+            fab_fav.visibility = View.GONE
         } else {
             detailProgressBar.visibility = View.GONE
             view_pager.visibility = View.VISIBLE
+            fab_fav.visibility = View.VISIBLE
         }
     }
 
@@ -160,5 +208,10 @@ class DetailActivity : AppCompatActivity() {
     override fun getApplicationContext(): Context {
         val context = super.getApplicationContext()
         return LocalizationUtil.applyLanguageApplicationContext(context, App.LANGUAGE)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        userHelper.close()
     }
 }

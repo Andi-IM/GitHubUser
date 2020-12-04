@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:iconSpaceReserved="false">
+
+    <SwitchPreference
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:iconSpaceReserved="true"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="Reminder"
+        app:key="@string/notif_key"
+        tools:summary="off" />
+    <Preference
+        android:icon="@drawable/ic_baseline_language_24"
+        android:iconSpaceReserved="true"
+        android:key="language"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/language_settings"
+        tools:summary="hello" />
+
+</PreferenceScreen>
