@@ -1,6 +1,8 @@
 package live.andiirham.githubuser.view.detail
 
+import android.content.ContentValues
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -17,19 +19,24 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_detail.*
 import live.andiirham.githubuser.BuildConfig.GITHUB_API
 import live.andiirham.githubuser.R
-import live.andiirham.githubuser.db.entity.UserFavorite
-import live.andiirham.githubuser.db.helper.UserHelper
+import live.andiirham.githubuser.db.UserContract.UserColumns.Companion.COLUMN_NAME_AVATAR_URL
+import live.andiirham.githubuser.db.UserContract.UserColumns.Companion.COLUMN_NAME_URL
+import live.andiirham.githubuser.db.UserContract.UserColumns.Companion.COLUMN_NAME_USERNAME
+import live.andiirham.githubuser.db.UserContract.UserColumns.Companion.CONTENT_URI
+import live.andiirham.githubuser.db.entity.Favorite
+import live.andiirham.githubuser.db.helper.MappingHelper
 import live.andiirham.githubuser.language.App
 import live.andiirham.githubuser.language.LocalizationUtil
 import live.andiirham.githubuser.model.DetailUser
 import live.andiirham.githubuser.view.adapter.SectionsPagerAdapter
 
-class DetailActivity : AppCompatActivity() {
+class DetailActivity : AppCompatActivity(), View.OnClickListener {
     companion object {
         const val EXTRA_URL = "extra_url"
         const val EXTRA_USERNAME = "extra_username"
-        const val EXTRA_FAVORITE = "extra_favorite"
+        const val EXTRA_STATE = "extra_state"
         const val EXTRA_POSITION = "extra_position"
+        const val EXTRA_FAVORITE = "extra_favorite"
         private val TAG = DetailActivity::class.java.simpleName
         const val REQUEST_ADD = 100
         const val RESULT_ADD = 101
@@ -37,8 +44,10 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private var baseContextWrappingDelegate: AppCompatDelegate? = null
-    private lateinit var userHelper: UserHelper
-    private var favorite: UserFavorite? = null
+    private var isDBExist = false
+    private var favorite: Favorite? = null
+    private var position: Int = 0
+    private lateinit var uriWithId: Uri
     private var favoriteStatus: Boolean = false
 
     override fun getDelegate() =
@@ -53,17 +62,50 @@ class DetailActivity : AppCompatActivity() {
         supportActionBar?.title = resources.getString(R.string.detail_user)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        // instance db
-        userHelper = UserHelper.getInstance(applicationContext)
-        userHelper.open()
+        favoriteStatus = intent.getBooleanExtra(EXTRA_STATE, false)
+        favorite = intent.getParcelableExtra(EXTRA_FAVORITE)
+        if (favorite != null) {
+            position = intent.getIntExtra(EXTRA_POSITION, 0)
+            isDBExist = true
+        } else {
+            favorite = Favorite()
+        }
 
-        favoriteStatus = intent.getBooleanExtra(EXTRA_FAVORITE, false)
-        favorite = UserFavorite()
+        if (isDBExist) {
+            uriWithId = Uri.parse(CONTENT_URI.toString() + "/${favorite?.id}")
+            val cursor = contentResolver.query(uriWithId, null, null, null, null)
 
+            if (cursor != null) {
+                favorite = MappingHelper.mapCursorToObject(cursor)
+                cursor.close()
+            }
+        }
         // getting url from MainActivity
         val url = intent.getStringExtra(EXTRA_URL)
         Log.d(TAG, "showDetail: Url = $url")
         url?.let { showDetail(it) }
+    }
+
+    override fun onClick(view: View) {
+        if (view.id == R.id.fab_fav) {
+
+            favoriteStatus = !favoriteStatus
+            // database
+            val values = ContentValues()
+            values.put(COLUMN_NAME_USERNAME, favorite?.username)
+            values.put(COLUMN_NAME_AVATAR_URL, favorite?.avatarUrl)
+            values.put(COLUMN_NAME_URL, favorite?.url)
+
+            if (favoriteStatus && !isDBExist) {
+                contentResolver.insert(CONTENT_URI, values)
+            } else {
+                if (isDBExist) {
+                    contentResolver.delete(uriWithId, null, null)
+                    finish()
+                }
+            }
+            setFavoriteStatus(favoriteStatus)
+        }
     }
 
     private fun showDetail(url: String) {
@@ -118,6 +160,7 @@ class DetailActivity : AppCompatActivity() {
                                     "Following: ${response?.following} \n " +
                                     "Img URL : ${response?.avatar_url}"
                         )
+
                         favorite?.username = response?.username
                         favorite?.avatarUrl = response?.avatar_url
                         favorite?.url = url
@@ -143,11 +186,7 @@ class DetailActivity : AppCompatActivity() {
             })
 
         setFavoriteStatus(favoriteStatus)
-        fab_fav.setOnClickListener {
-            favoriteStatus = !favoriteStatus
-            // database
-            setFavoriteStatus(favoriteStatus)
-        }
+        fab_fav.setOnClickListener(this)
 
         // Tab Followers and Following
         val sectionsPagerAdapter =
@@ -160,7 +199,6 @@ class DetailActivity : AppCompatActivity() {
     private fun setFavoriteStatus(favoriteStatus: Boolean) {
         if (favoriteStatus) {
             // change icons
-            favorite?.let { userHelper.insertFavUser(it) }
             fab_fav.setImageDrawable(
                 ResourcesCompat.getDrawable(
                     resources,
@@ -170,7 +208,6 @@ class DetailActivity : AppCompatActivity() {
             )
         } else {
             // change icons
-            favorite?.username?.let { userHelper.deleteFavUser(it) }
             fab_fav.setImageDrawable(
                 ResourcesCompat.getDrawable(
                     resources,
@@ -191,12 +228,10 @@ class DetailActivity : AppCompatActivity() {
     private fun showLoading(state: Boolean) {
         if (state) {
             detailProgressBar.visibility = View.VISIBLE
-            view_pager.visibility = View.GONE
-            fab_fav.visibility = View.GONE
+            fab_fav.hide()
         } else {
             detailProgressBar.visibility = View.GONE
-            view_pager.visibility = View.VISIBLE
-            fab_fav.visibility = View.VISIBLE
+            fab_fav.show()
         }
     }
 
@@ -208,10 +243,5 @@ class DetailActivity : AppCompatActivity() {
     override fun getApplicationContext(): Context {
         val context = super.getApplicationContext()
         return LocalizationUtil.applyLanguageApplicationContext(context, App.LANGUAGE)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        userHelper.close()
     }
 }

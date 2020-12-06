@@ -23,6 +23,7 @@ import live.andiirham.githubuser.model.User
 import live.andiirham.githubuser.view.adapter.OnItemClickCallback
 import live.andiirham.githubuser.view.adapter.UserAdapter
 import live.andiirham.githubuser.view.detail.DetailActivity
+import live.andiirham.githubuser.view.detail.DetailActivity.Companion.REQUEST_ADD
 import live.andiirham.githubuser.view.favorites.FavoriteActivity
 import live.andiirham.githubuser.view.settings.SettingsActivity
 import live.andiirham.githubuser.viewmodel.MainViewModel
@@ -150,7 +151,7 @@ class MainActivity : AppCompatActivity() {
         val detailIntent = Intent(this@MainActivity, DetailActivity::class.java)
         detailIntent.putExtra(DetailActivity.EXTRA_URL, user.url)
         detailIntent.putExtra(DetailActivity.EXTRA_USERNAME, user.username)
-        startActivity(detailIntent)
+        startActivityForResult(detailIntent, REQUEST_ADD)
     }
 
     // Loading Show when query submitted

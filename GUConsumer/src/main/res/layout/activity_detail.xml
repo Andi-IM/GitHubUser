@@ -1,0 +1,161 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:isScrollContainer="true"
+    android:orientation="vertical"
+    android:overScrollMode="ifContentScrolls"
+    android:scrollbars="vertical"
+    tools:context=".view.DetailActivity"
+    tools:viewBindingIgnore="true">
+
+    <ProgressBar
+        android:id="@+id/detailProgressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="#000000"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/detailLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img_avatar_detail"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:contentDescription="@string/avatar_of_image"
+                tools:src="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="50dp"
+                android:layout_toEndOf="@+id/img_avatar_detail"
+                android:textColor="@color/design_default_color_primary"
+                android:textSize="20sp"
+                tools:text="Andi Irham" />
+
+            <TextView
+                android:id="@+id/tv_userId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_name"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@+id/img_avatar_detail"
+                tools:text="airhamm" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_detail_company"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:drawablePadding="10dp"
+            android:maxLines="2"
+            android:minLines="1"
+            android:textAlignment="viewStart"
+            android:textColor="@android:color/black"
+            app:drawableStartCompat="@drawable/ic_baseline_group_24"
+            tools:text="Politeknik Negeri Padang" />
+
+        <TextView
+            android:id="@+id/tv_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:drawablePadding="10dp"
+            android:textColor="@android:color/black"
+            app:drawableStartCompat="@drawable/ic_baseline_location_on_24"
+            tools:text="Indonesia" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/tv_followers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:textColor="@android:color/black"
+                app:drawableStartCompat="@drawable/ic_baseline_person_24"
+                tools:text="10 followers" />
+
+            <TextView
+                android:id="@+id/tv_following"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/tv_followers"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:textColor="@android:color/black"
+                tools:text="\u25CF 30 following" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_repo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:textColor="@android:color/black"
+            app:drawableStartCompat="@drawable/ic_baseline_folder_24"
+            tools:text="20 Repository" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:minHeight="500dp"
+            android:overScrollMode="ifContentScrolls">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/darker_gray"
+                android:backgroundTintMode="add"
+                app:tabGravity="fill"
+                app:tabIndicatorAnimationDuration="500"
+                app:tabIndicatorColor="#000000"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="#000000"
+                app:tabTextColor="#fafafa" />
+        </androidx.viewpager.widget.ViewPager>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_fav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/make_favorite"
+            android:elevation="6dp"
+            android:src="@drawable/ic_baseline_favorite_border_white_24" />
+    </FrameLayout>
+</LinearLayout>

@@ -2,7 +2,10 @@ package live.andiirham.githubuser.view.favorites
 
 import android.content.Context
 import android.content.Intent
+import android.database.ContentObserver
 import android.os.Bundle
+import android.os.Handler
+import android.os.HandlerThread
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -14,9 +17,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import live.andiirham.githubuser.databinding.ActivityFavoriteBinding
-import live.andiirham.githubuser.db.entity.UserFavorite
+import live.andiirham.githubuser.db.UserContract.UserColumns.Companion.CONTENT_URI
+import live.andiirham.githubuser.db.entity.Favorite
 import live.andiirham.githubuser.db.helper.MappingHelper
-import live.andiirham.githubuser.db.helper.UserHelper
 import live.andiirham.githubuser.language.App
 import live.andiirham.githubuser.language.LocalizationUtil
 import live.andiirham.githubuser.view.adapter.FavoriteAdapter
@@ -24,7 +27,6 @@ import live.andiirham.githubuser.view.detail.DetailActivity
 
 class FavoriteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFavoriteBinding
-    private lateinit var userHelper: UserHelper
     private lateinit var adapter: FavoriteAdapter
     private var baseContextWrappingDelegate: AppCompatDelegate? = null
 
@@ -50,31 +52,45 @@ class FavoriteActivity : AppCompatActivity() {
         adapter = FavoriteAdapter(this)
         binding.rvFav.adapter = adapter
 
-        userHelper = UserHelper.getInstance(applicationContext)
-        userHelper.open()
+        // Threading
+        val handlerThread = HandlerThread("Data Observer")
+        handlerThread.start()
+        val handler = Handler(handlerThread.looper)
 
+        val myObserver = object : ContentObserver(handler) {
+            override fun onChange(selfChange: Boolean) {
+                loadUserAsync()
+            }
+        }
+
+        contentResolver.registerContentObserver(CONTENT_URI, true, myObserver)
         /**
          * Cek savedInstanceState
          */
         if (savedInstanceState == null) {
-            getUser()
+            loadUserAsync()
         } else {
-            val list = savedInstanceState.getParcelableArrayList<UserFavorite>(EXTRA_STATE)
+            val list = savedInstanceState.getParcelableArrayList<Favorite>(EXTRA_STATE)
             if (list != null) {
                 adapter.listUsers = list
             }
         }
     }
 
-    private fun getUser() {
+    private fun loadUserAsync() {
         GlobalScope.launch(Dispatchers.Main) {
             showLoading(true)
             val defferedUsers = async(Dispatchers.IO) {
-                val cursor = userHelper.queryAll()
+                // CONTENT_URI = content://live.andiirham.githubuser/favorites/
+                val cursor = contentResolver.query(
+                    CONTENT_URI, null,
+                    null, null,
+                    null
+                )
                 MappingHelper.mapCursorToArrayList(cursor)
             }
-            showLoading(false)
             val favorite = defferedUsers.await()
+            showLoading(false)
             if (favorite.size > 0) {
                 adapter.listUsers = favorite
             } else {
@@ -96,7 +112,7 @@ class FavoriteActivity : AppCompatActivity() {
             when (requestCode) {
                 // Akan dipanggil jika request codenya ADD
                 DetailActivity.REQUEST_ADD -> if (resultCode == DetailActivity.RESULT_ADD) {
-                    val note = data.getParcelableExtra<UserFavorite>(DetailActivity.EXTRA_FAVORITE)
+                    val note = data.getParcelableExtra<Favorite>(DetailActivity.EXTRA_STATE)
 
                     if (note != null) {
                         adapter.addItem(note)
@@ -150,10 +166,5 @@ class FavoriteActivity : AppCompatActivity() {
     override fun getApplicationContext(): Context {
         val context = super.getApplicationContext()
         return LocalizationUtil.applyLanguageApplicationContext(context, App.LANGUAGE)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        userHelper.close()
     }
 }

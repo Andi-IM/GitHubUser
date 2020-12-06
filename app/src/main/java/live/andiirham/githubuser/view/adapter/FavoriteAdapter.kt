@@ -10,23 +10,24 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.item_user.view.*
 import live.andiirham.githubuser.R
-import live.andiirham.githubuser.db.entity.UserFavorite
-import live.andiirham.githubuser.model.User
+import live.andiirham.githubuser.db.entity.Favorite
 import live.andiirham.githubuser.view.detail.DetailActivity
+import live.andiirham.githubuser.view.detail.DetailActivity.Companion.EXTRA_FAVORITE
+import live.andiirham.githubuser.view.detail.DetailActivity.Companion.REQUEST_ADD
 
 class FavoriteAdapter(private val activity: Activity) :
     RecyclerView.Adapter<FavoriteAdapter.FavoriteHolder>() {
-    var listUsers = ArrayList<UserFavorite>()
+
+    var listUsers = ArrayList<Favorite>()
         set(listUsers) {
             if (listUsers.size > 0) {
                 this.listUsers.clear()
             }
             this.listUsers.addAll(listUsers)
-
             notifyDataSetChanged()
         }
 
-    fun addItem(favorite: UserFavorite) {
+    fun addItem(favorite: Favorite) {
         this.listUsers.add(favorite)
         notifyDataSetChanged()
     }
@@ -50,7 +51,7 @@ class FavoriteAdapter(private val activity: Activity) :
     }
 
     inner class FavoriteHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(favorite: UserFavorite) {
+        fun bind(favorite: Favorite) {
             with(itemView) {
                 Glide.with(itemView.context)
                     .load(favorite.avatarUrl)
@@ -59,14 +60,15 @@ class FavoriteAdapter(private val activity: Activity) :
                 tv_username.text = favorite.username
                 itemView.setOnClickListener(
                     CustomOnItemClickListener(
-                        adapterPosition,
+                        bindingAdapterPosition,
                         object : CustomOnItemClickListener.OnItemClickCallback {
                             override fun onItemClicked(view: View, position: Int) {
                                 val intent = Intent(activity, DetailActivity::class.java)
                                 intent.putExtra(DetailActivity.EXTRA_URL, favorite.url)
                                 intent.putExtra(DetailActivity.EXTRA_USERNAME, favorite.username)
-                                intent.putExtra(DetailActivity.EXTRA_FAVORITE, true)
-                                activity.startActivity(intent)
+                                intent.putExtra(EXTRA_FAVORITE, favorite)
+                                intent.putExtra(DetailActivity.EXTRA_STATE, true)
+                                activity.startActivityForResult(intent, REQUEST_ADD)
                             }
                         })
                 )
@@ -74,8 +76,3 @@ class FavoriteAdapter(private val activity: Activity) :
         }
     }
 }
-
-interface OnFavoriteItemClickCallback {
-    fun onItemClicked(data: User)
-}
-
