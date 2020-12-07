@@ -25,6 +25,15 @@ class LangActivity : AppCompatActivity() {
             baseContextWrappingDelegate = this
         }
 
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocalizationUtil.applyLanguageContext(newBase, App.LANGUAGE))
+    }
+
+    override fun getApplicationContext(): Context {
+        val context = super.getApplicationContext()
+        return LocalizationUtil.applyLanguageApplicationContext(context, App.LANGUAGE)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lang)
@@ -61,15 +70,6 @@ class LangActivity : AppCompatActivity() {
             addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
         }
         startActivity(intent)
-    }
-
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(LocalizationUtil.applyLanguageContext(newBase, App.LANGUAGE))
-    }
-
-    override fun getApplicationContext(): Context {
-        val context = super.getApplicationContext()
-        return LocalizationUtil.applyLanguageApplicationContext(context, App.LANGUAGE)
     }
 
     override fun onSupportNavigateUp(): Boolean {

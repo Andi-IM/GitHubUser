@@ -9,16 +9,20 @@
         android:iconSpaceReserved="true"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:title="Reminder"
+        android:summaryOff="@string/reminder_off"
+        android:summaryOn="@string/reminder_on"
+        android:title="@string/reminder_settings"
         app:key="@string/notif_key"
-        tools:summary="off" />
+        tools:summary="off"
+        tools:targetApi="o" />
     <Preference
         android:icon="@drawable/ic_baseline_language_24"
         android:iconSpaceReserved="true"
-        android:key="language"
+        android:key="@string/lang_key"
         android:selectAllOnFocus="true"
         android:singleLine="true"
         android:title="@string/language_settings"
-        tools:summary="hello" />
+        tools:summary="hello"
+        tools:targetApi="o" />
 
 </PreferenceScreen>

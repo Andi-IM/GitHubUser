@@ -77,13 +77,8 @@ class FollowersFragment : Fragment() {
 
                 val errorCode = FollowersViewModel.errorCode
                 if (!errorCode.isBlank()) {
-                    Toast.makeText(
-                        activity,
-                        "Followers Tab Error $errorCode",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    toast("Followers Tab Error $errorCode")
                 }
-
                 getProgressbar(false)
             }
         })
@@ -94,5 +89,9 @@ class FollowersFragment : Fragment() {
         if (state) {
             pb_followers.visibility = View.VISIBLE
         } else pb_followers.visibility = View.GONE
+    }
+
+    private fun toast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 }

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".view.detail.FollowingFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/tv_nofollowing"
         android:layout_width="wrap_content"

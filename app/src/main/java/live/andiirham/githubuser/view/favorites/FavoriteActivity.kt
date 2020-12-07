@@ -16,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import live.andiirham.githubuser.R
 import live.andiirham.githubuser.databinding.ActivityFavoriteBinding
 import live.andiirham.githubuser.db.UserContract.UserColumns.Companion.CONTENT_URI
 import live.andiirham.githubuser.db.entity.Favorite
@@ -44,7 +45,7 @@ class FavoriteActivity : AppCompatActivity() {
         binding = ActivityFavoriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.title = "Favorites"
+        supportActionBar?.title = resources.getString(R.string.favorites)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         binding.rvFav.layoutManager = LinearLayoutManager(this)
@@ -77,6 +78,13 @@ class FavoriteActivity : AppCompatActivity() {
         }
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        val refresh = Intent(this, javaClass)
+        startActivity(refresh)
+        finish()
+    }
+
     private fun loadUserAsync() {
         GlobalScope.launch(Dispatchers.Main) {
             showLoading(true)
@@ -93,9 +101,10 @@ class FavoriteActivity : AppCompatActivity() {
             showLoading(false)
             if (favorite.size > 0) {
                 adapter.listUsers = favorite
+                showSnackbarMessage(getString(R.string.data_found))
             } else {
                 adapter.listUsers = ArrayList()
-                showSnackbarMessage("Tidak ada data saat ini")
+                showSnackbarMessage(getString(R.string.no_data))
             }
         }
     }

@@ -12,10 +12,10 @@ object UserContract {
     class UserColumns : BaseColumns {
         companion object {
             const val TABLE_NAME = "favorites"
-            val _ID = "_id"
-            val COLUMN_NAME_USERNAME = "username"
-            val COLUMN_NAME_AVATAR_URL = "avatar_url"
-            val COLUMN_NAME_URL = "url"
+            const val _ID = "_id"
+            const val COLUMN_NAME_USERNAME = "username"
+            const val COLUMN_NAME_AVATAR_URL = "avatar_url"
+            const val COLUMN_NAME_URL = "url"
 
             // Base content yang digunakan untuk mengakses content provider
             val CONTENT_URI: Uri = Uri.Builder().scheme(SCHEME)

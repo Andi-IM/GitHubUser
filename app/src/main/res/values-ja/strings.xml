@@ -11,8 +11,22 @@
     <string name="home">Github User\'s Search</string>
     <string name="tab_text_1">フォロワー</string>
     <string name="tab_text_2">フォロー</string>
-    <string name="silahkan_klik_tombol_search_untuk_mencari_user">ユーザーを検索するには、[検索]ボタンをクリックしてください。</string>
+    <string name="hint">ユーザーを検索するには、[検索]ボタンをクリックしてください。</string>
     <string name="no_followers">誰もフォローしなかった</string>
     <string name="no_following">何も続かなかった</string>
     <string name="query_hint">ユーザー名を検索：</string>
+    <string name="lang_key">言語</string>
+    <string name="notif_key">お知らせ</string>
+    <string name="reminder_settings">リマインダー</string>
+    <string name="settings">設定</string>
+    <string name="reminder_aborted">リマインダーが中止されました</string>
+    <string name="set_setup_alarm">リマインダーがアクティブです！</string>
+    <string name="dialy_reminder">デイリーリマインダー</string>
+    <string name="favorites">お気に入り</string>
+    <string name="make_favorite">お気に入りにする</string>
+    <string name="daily_reminder_message">Githubでお気に入りのユーザーを見つけましょう</string>
+    <string name="no_data">現時点ではデータはありません</string>
+    <string name="data_found">データが見つかりました！</string>
+    <string name="reminder_on">午前9時ごとに通知されます</string>
+    <string name="reminder_off">リマインダーオフ</string>
 </resources>

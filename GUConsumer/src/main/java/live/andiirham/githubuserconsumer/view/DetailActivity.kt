@@ -22,17 +22,17 @@ class DetailActivity : AppCompatActivity() {
         const val EXTRA_URL = "extra_url"
         const val EXTRA_USERNAME = "extra_username"
         const val EXTRA_FAVORITE = "extra_favorite"
-        const val EXTRA_POSITION = "extra_position"
         const val EXTRA_STATE = "extra_state"
         private val TAG = DetailActivity::class.java.simpleName
         const val REQUEST_ADD = 100
-        const val RESULT_ADD = 101
-        const val RESULT_DELETE = 301
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
+
+        supportActionBar?.title = "Favorite List"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val url = intent.getStringExtra(EXTRA_URL)
         if (url != null) showDetail(url)
@@ -124,12 +124,15 @@ class DetailActivity : AppCompatActivity() {
         if (state) {
             detailProgressBar.visibility = View.VISIBLE
             view_pager.visibility = View.GONE
-            fab_fav.visibility = View.GONE
         } else {
             detailProgressBar.visibility = View.GONE
             view_pager.visibility = View.VISIBLE
-            fab_fav.visibility = View.VISIBLE
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
 }

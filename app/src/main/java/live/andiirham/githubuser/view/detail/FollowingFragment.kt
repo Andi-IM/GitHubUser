@@ -77,13 +77,8 @@ class FollowingFragment : Fragment() {
                 // Error Showing
                 val errorCode = FollowingViewModel.errorCode
                 if (!errorCode.isBlank()) {
-                    Toast.makeText(
-                        activity,
-                        "Following Tab Error $errorCode",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    toast("Following Tab Error $errorCode")
                 }
-
                 getProgressbar(false)
             }
         })
@@ -94,5 +89,9 @@ class FollowingFragment : Fragment() {
         if (state) {
             pb_following.visibility = View.VISIBLE
         } else pb_following.visibility = View.GONE
+    }
+
+    private fun toast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 }

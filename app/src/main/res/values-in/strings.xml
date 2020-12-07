@@ -11,8 +11,22 @@
     <string name="home">Pencarian User Github</string>
     <string name="tab_text_1">Pengikut</string>
     <string name="tab_text_2">Mengikuti</string>
-    <string name="silahkan_klik_tombol_search_untuk_mencari_user">Silahkan Klik Tombol Search untuk mencari user!</string>
+    <string name="hint">Silahkan Klik Tombol Search untuk mencari user!</string>
     <string name="no_followers">Tak Ada yang mengikuti :(</string>
     <string name="no_following">Tak ada yang diikuti</string>
     <string name="query_hint">Cari nama pengguna :</string>
+    <string name="make_favorite">Jadikan Favorit</string>
+    <string name="favorites">Favorit</string>
+    <string name="set_setup_alarm">Pengingat Aktif!</string>
+    <string name="settings">Pengaturan</string>
+    <string name="reminder_settings">Pengingat</string>
+    <string name="notif_key">Notifikasi</string>
+    <string name="lang_key">Bahasa</string>
+    <string name="dialy_reminder">Pengingat Harian GHU</string>
+    <string name="reminder_aborted">Pengingat dibatalkan</string>
+    <string name="daily_reminder_message">Yuk, cari pengguna favorit Anda di Github!</string>
+    <string name="no_data">Tidak ada data saat ini</string>
+    <string name="data_found">Ketemu!</string>
+    <string name="reminder_on">diingatkan setiap 9.00 pagi</string>
+    <string name="reminder_off">pengingat mati</string>
 </resources>

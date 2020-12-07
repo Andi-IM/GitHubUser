@@ -24,15 +24,15 @@ object MappingHelper {
     }
 
     fun mapCursorToObject(favoritesCursor: Cursor?): User {
-        var User = User()
+        var user = User()
         favoritesCursor?.apply {
             moveToFirst()
             val id = getInt(getColumnIndexOrThrow(_ID))
             val username = getString(getColumnIndexOrThrow(COLUMN_NAME_USERNAME))
             val avatarUrl = getString(getColumnIndexOrThrow(COLUMN_NAME_AVATAR_URL))
             val url = getString(getColumnIndexOrThrow(COLUMN_NAME_URL))
-            User = User(id, username, avatarUrl, url)
+            user = User(id, username, avatarUrl, url)
         }
-        return User
+        return user
     }
 }

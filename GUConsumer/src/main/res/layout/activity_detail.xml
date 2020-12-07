@@ -147,15 +147,5 @@
                 app:tabSelectedTextColor="#000000"
                 app:tabTextColor="#fafafa" />
         </androidx.viewpager.widget.ViewPager>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_fav"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="16dp"
-            android:contentDescription="@string/make_favorite"
-            android:elevation="6dp"
-            android:src="@drawable/ic_baseline_favorite_border_white_24" />
     </FrameLayout>
 </LinearLayout>

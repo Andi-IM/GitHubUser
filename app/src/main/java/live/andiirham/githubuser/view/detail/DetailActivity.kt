@@ -4,7 +4,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -37,7 +36,6 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         const val EXTRA_STATE = "extra_state"
         const val EXTRA_POSITION = "extra_position"
         const val EXTRA_FAVORITE = "extra_favorite"
-        private val TAG = DetailActivity::class.java.simpleName
         const val REQUEST_ADD = 100
         const val RESULT_ADD = 101
         const val RESULT_DELETE = 301
@@ -82,7 +80,6 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         }
         // getting url from MainActivity
         val url = intent.getStringExtra(EXTRA_URL)
-        Log.d(TAG, "showDetail: Url = $url")
         url?.let { showDetail(it) }
     }
 
@@ -149,40 +146,20 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
                         showLoading(false)
 
-                        Log.d(
-                            TAG, "onResponse: " +
-                                    "Name: ${response?.name} \n " +
-                                    "Username: ${response?.username} \n " +
-                                    "Location: ${response?.location} \n " +
-                                    "Repo: ${response?.repository} \n " +
-                                    "Company: ${response?.company} \n " +
-                                    "Followers: ${response?.followers} \n " +
-                                    "Following: ${response?.following} \n " +
-                                    "Img URL : ${response?.avatar_url}"
-                        )
-
                         favorite?.username = response?.username
                         favorite?.avatarUrl = response?.avatar_url
                         favorite?.url = url
 
                     } catch (e: Exception) {
-                        Log.d(TAG, "onResponse: ${e.message} : ${e.stackTrace}")
-                        Toast.makeText(this@DetailActivity, "Something Error", Toast.LENGTH_LONG)
-                            .show()
+                        toast("Something Error")
                         showLoading(false)
                     }
                 }
 
                 override fun onError(anError: ANError?) {
-                    Log.d(TAG, "onError: ${anError?.errorCode} : ${anError?.errorDetail}")
-                    Toast.makeText(
-                        this@DetailActivity,
-                        "Error : ${anError?.errorCode} : ${anError?.errorDetail}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    toast("Error : ${anError?.errorCode} : ${anError?.errorDetail}")
                     showLoading(false)
                 }
-
             })
 
         setFavoriteStatus(favoriteStatus)
@@ -194,6 +171,10 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         sectionsPagerAdapter.username = intent.getStringExtra(EXTRA_USERNAME)
         view_pager.adapter = sectionsPagerAdapter
         tabs.setupWithViewPager(view_pager)
+    }
+
+    private fun toast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun setFavoriteStatus(favoriteStatus: Boolean) {

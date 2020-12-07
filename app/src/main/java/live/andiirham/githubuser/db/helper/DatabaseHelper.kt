@@ -15,11 +15,11 @@ internal class DatabaseHelper(context: Context) :
     companion object {
         private const val DATABASE_NAME = "githubuserdb"
         private const val DATABASE_VERSION = 1
-        private val SQL_CREATE_TABLE_FAVORITE = "CREATE TABLE $TABLE_NAME" +
+        private const val SQL_CREATE_TABLE_FAVORITE = "CREATE TABLE $TABLE_NAME" +
                 "(${_ID} INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "${COLUMN_NAME_USERNAME} TEXT NOT NULL," +
-                "${COLUMN_NAME_AVATAR_URL} TEXT NOT NULL," +
-                "${COLUMN_NAME_URL} TEXT NOT NULL)"
+                "$COLUMN_NAME_USERNAME TEXT NOT NULL," +
+                "$COLUMN_NAME_AVATAR_URL TEXT NOT NULL," +
+                "$COLUMN_NAME_URL TEXT NOT NULL)"
     }
 
     // digunakan saat membangun db
