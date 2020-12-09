@@ -4,7 +4,6 @@ import android.database.Cursor
 import live.andiirham.githubuser.db.UserContract.UserColumns.Companion.COLUMN_NAME_AVATAR_URL
 import live.andiirham.githubuser.db.UserContract.UserColumns.Companion.COLUMN_NAME_URL
 import live.andiirham.githubuser.db.UserContract.UserColumns.Companion.COLUMN_NAME_USERNAME
-import live.andiirham.githubuser.db.UserContract.UserColumns.Companion._ID
 import live.andiirham.githubuser.db.entity.Favorite
 
 object MappingHelper {
@@ -13,11 +12,10 @@ object MappingHelper {
 
         cursor?.apply {
             while (moveToNext()) {
-                val id = getInt(getColumnIndexOrThrow(_ID))
                 val username = getString(getColumnIndexOrThrow(COLUMN_NAME_USERNAME))
                 val avatarUrl = getString(getColumnIndexOrThrow(COLUMN_NAME_AVATAR_URL))
                 val url = getString(getColumnIndexOrThrow(COLUMN_NAME_URL))
-                userList.add(Favorite(id, username, avatarUrl, url))
+                userList.add(Favorite(username, avatarUrl, url))
             }
         }
         return userList
@@ -27,11 +25,10 @@ object MappingHelper {
         var favorite = Favorite()
         favoritesCursor?.apply {
             moveToFirst()
-            val id = getInt(getColumnIndexOrThrow(_ID))
             val username = getString(getColumnIndexOrThrow(COLUMN_NAME_USERNAME))
             val avatarUrl = getString(getColumnIndexOrThrow(COLUMN_NAME_AVATAR_URL))
             val url = getString(getColumnIndexOrThrow(COLUMN_NAME_URL))
-            favorite = Favorite(id, username, avatarUrl, url)
+            favorite = Favorite(username, avatarUrl, url)
         }
         return favorite
     }

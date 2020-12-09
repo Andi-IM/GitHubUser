@@ -7,17 +7,15 @@ import live.andiirham.githubuser.db.UserContract.UserColumns.Companion.COLUMN_NA
 import live.andiirham.githubuser.db.UserContract.UserColumns.Companion.COLUMN_NAME_URL
 import live.andiirham.githubuser.db.UserContract.UserColumns.Companion.COLUMN_NAME_USERNAME
 import live.andiirham.githubuser.db.UserContract.UserColumns.Companion.TABLE_NAME
-import live.andiirham.githubuser.db.UserContract.UserColumns.Companion._ID
 
 internal class DatabaseHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
         private const val DATABASE_NAME = "githubuserdb"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2
         private const val SQL_CREATE_TABLE_FAVORITE = "CREATE TABLE $TABLE_NAME" +
-                "(${_ID} INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "$COLUMN_NAME_USERNAME TEXT NOT NULL," +
+                "($COLUMN_NAME_USERNAME TEXT NOT NULL PRIMARY KEY," +
                 "$COLUMN_NAME_AVATAR_URL TEXT NOT NULL," +
                 "$COLUMN_NAME_URL TEXT NOT NULL)"
     }

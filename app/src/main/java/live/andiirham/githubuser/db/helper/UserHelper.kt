@@ -4,13 +4,8 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.provider.BaseColumns
-import live.andiirham.githubuser.db.UserContract.UserColumns.Companion.COLUMN_NAME_AVATAR_URL
-import live.andiirham.githubuser.db.UserContract.UserColumns.Companion.COLUMN_NAME_URL
 import live.andiirham.githubuser.db.UserContract.UserColumns.Companion.COLUMN_NAME_USERNAME
 import live.andiirham.githubuser.db.UserContract.UserColumns.Companion.TABLE_NAME
-import live.andiirham.githubuser.db.UserContract.UserColumns.Companion._ID
-import live.andiirham.githubuser.db.entity.Favorite
 import java.sql.SQLException
 
 class UserHelper(context: Context) {
@@ -46,43 +41,16 @@ class UserHelper(context: Context) {
             null,
             null,
             null,
-            "$_ID DESC",
+            "$COLUMN_NAME_USERNAME DESC",
             null
         )
     }
 
-    fun getAllUser(): ArrayList<Favorite> {
-        val arrayList = ArrayList<Favorite>()
-        val cursor = database.query(
-            DATABASE_TABLE, null, null, null,
-            null, null, null, null
-        )
-        cursor.moveToFirst()
-        var user: Favorite
-        if (cursor.count > 0) {
-            do {
-                user = Favorite()
-                user.username = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME_USERNAME))
-                user.avatarUrl = cursor.getString(
-                    cursor.getColumnIndexOrThrow(
-                        COLUMN_NAME_AVATAR_URL
-                    )
-                )
-                user.url = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME_URL))
-
-                arrayList.add(user)
-                cursor.moveToNext()
-            } while (!cursor.isAfterLast)
-        }
-        cursor.close()
-        return arrayList
-    }
-
-    fun queryById(id: String): Cursor {
+    fun queryByUsername(id: String): Cursor {
         return database.query(
             DATABASE_TABLE,
             null,
-            "${BaseColumns._ID} = ?",
+            "${COLUMN_NAME_USERNAME} = ?",
             arrayOf(id),
             null,
             null,
@@ -96,18 +64,10 @@ class UserHelper(context: Context) {
         return database.insert(DATABASE_TABLE, null, values)
     }
 
-    fun insertFavUser(favorite: Favorite): Long {
-        val args = ContentValues()
-        args.put(COLUMN_NAME_USERNAME, favorite.username)
-        args.put(COLUMN_NAME_AVATAR_URL, favorite.avatarUrl)
-        args.put(COLUMN_NAME_URL, favorite.url)
-        return database.insert(DATABASE_TABLE, null, args)
-    }
-
-    fun deleteByUsername(id: String): Int {
+    fun deleteByUsername(username: String): Int {
         return database.delete(
             TABLE_NAME,
-            "$_ID = '$id'",
+            "$COLUMN_NAME_USERNAME = '$username'",
             null
         )
     }

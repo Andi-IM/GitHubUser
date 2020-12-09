@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import live.andiirham.githubuser.R
+import live.andiirham.githubuser.view.splashscreen.SplashScreenActivity
 import java.util.*
 
 class AlarmReceiver : BroadcastReceiver() {
@@ -32,8 +33,13 @@ class AlarmReceiver : BroadcastReceiver() {
     }
 
     private fun showAlarmNotification(context: Context, message: String) {
+        val NOTIFICATION_ID = 1
         val channelD = "Channel_1"
         val channelName = "DailyReminder channel"
+
+        // Pending Intent
+        val intent = Intent(Intent.ACTION_VIEW, null, context, SplashScreenActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
 
         val notificationManagerCompat =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -41,6 +47,7 @@ class AlarmReceiver : BroadcastReceiver() {
         val builder = NotificationCompat.Builder(context, channelD)
             .setSmallIcon(R.drawable.github)
             .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.github))
+            .setContentIntent(pendingIntent)
             .setContentTitle(context.getString(R.string.dialy_reminder))
             .setContentText(message)
             .setColor(ContextCompat.getColor(context, android.R.color.transparent))

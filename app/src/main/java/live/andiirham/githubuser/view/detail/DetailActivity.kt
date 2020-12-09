@@ -45,7 +45,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
     private var isDBExist = false
     private var favorite: Favorite? = null
     private var position: Int = 0
-    private lateinit var uriWithId: Uri
+    private lateinit var uriWithUname: Uri
     private var favoriteStatus: Boolean = false
 
     override fun getDelegate() =
@@ -70,12 +70,17 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         if (isDBExist) {
-            uriWithId = Uri.parse(CONTENT_URI.toString() + "/${favorite?.id}")
-            val cursor = contentResolver.query(uriWithId, null, null, null, null)
-
+            uriWithUname = Uri.parse("$CONTENT_URI/${favorite?.username}/user")
+            val cursor = contentResolver.query(uriWithUname, null, null, null, null)
             if (cursor != null) {
-                favorite = MappingHelper.mapCursorToObject(cursor)
-                cursor.close()
+                if (cursor.count > 0) {
+                    favorite = MappingHelper.mapCursorToObject(cursor)
+                    favoriteStatus = true
+                    cursor.close()
+                } else {
+                    isDBExist = false
+                    favoriteStatus = false
+                }
             }
         }
         // getting url from MainActivity
@@ -97,7 +102,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
                 contentResolver.insert(CONTENT_URI, values)
             } else {
                 if (isDBExist) {
-                    contentResolver.delete(uriWithId, null, null)
+                    contentResolver.delete(uriWithUname, null, null)
                     finish()
                 }
             }
@@ -168,7 +173,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         // Tab Followers and Following
         val sectionsPagerAdapter =
             SectionsPagerAdapter(this, supportFragmentManager)
-        sectionsPagerAdapter.username = intent.getStringExtra(EXTRA_USERNAME)
+        sectionsPagerAdapter.username = favorite?.username
         view_pager.adapter = sectionsPagerAdapter
         tabs.setupWithViewPager(view_pager)
     }

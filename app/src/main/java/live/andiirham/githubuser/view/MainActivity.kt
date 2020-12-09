@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import live.andiirham.githubuser.R
 import live.andiirham.githubuser.databinding.ActivityMainBinding
+import live.andiirham.githubuser.db.entity.Favorite
 import live.andiirham.githubuser.language.App
 import live.andiirham.githubuser.language.LocalizationUtil
 import live.andiirham.githubuser.model.User
@@ -150,7 +151,11 @@ class MainActivity : AppCompatActivity() {
     private fun showSelectedUser(user: User) {
         val detailIntent = Intent(this@MainActivity, DetailActivity::class.java)
         detailIntent.putExtra(DetailActivity.EXTRA_URL, user.url)
-        detailIntent.putExtra(DetailActivity.EXTRA_USERNAME, user.username)
+
+        // convert to another dataclass
+        val favorite = Favorite(user.username, user.avatar_url, user.url)
+        detailIntent.putExtra(DetailActivity.EXTRA_FAVORITE, favorite)
+
         startActivityForResult(detailIntent, REQUEST_ADD)
     }
 

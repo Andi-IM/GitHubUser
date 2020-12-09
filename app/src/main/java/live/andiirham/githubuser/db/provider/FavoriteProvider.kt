@@ -16,21 +16,18 @@ class FavoriteProvider : ContentProvider() {
 
     companion object {
         private const val USER = 1
-        private const val USER_ID = 2
+        private const val USERNAME = 2
         private lateinit var userHelper: UserHelper
         private val sUriMatcher = UriMatcher(UriMatcher.NO_MATCH)
 
         init {
             // content://live.andiirham.githubuser/favorites
-            sUriMatcher.addURI(
-                AUTHORITY, TABLE_NAME,
-                USER
-            )
+            sUriMatcher.addURI(AUTHORITY, TABLE_NAME, USER)
 
-            // content://live.andiirham.githubuser/favorites/username
+            // content://live.andiirham.githubuser/favorites/#/user
             sUriMatcher.addURI(
-                AUTHORITY, "$TABLE_NAME/#",
-                USER_ID
+                AUTHORITY, "$TABLE_NAME/*/user",
+                USERNAME
             )
         }
     }
@@ -52,14 +49,25 @@ class FavoriteProvider : ContentProvider() {
         Log.d("PROVIDER", "query: ${sUriMatcher.match(uri)}")
         return when (sUriMatcher.match(uri)) {
             USER -> userHelper.queryAll()
-            USER_ID -> userHelper.queryById(uri.lastPathSegment.toString())
+            USERNAME -> {
+                // a tricky path to parsing a username ...
+                // hope to feedback for more efficient solution
+
+                val path = uri.path
+                val getUsername = path!!.split("/").toTypedArray()
+                val username = getUsername[2]
+                userHelper.queryByUsername(username)
+            }
             else -> null
         }
     }
 
     override fun insert(uri: Uri, contentValues: ContentValues?): Uri? {
-        val added: Long = when (USER) {
-            sUriMatcher.match(uri) -> userHelper.insert(contentValues)
+        val added: Int = when (USER) {
+            sUriMatcher.match(uri) -> {
+                userHelper.insert(contentValues)
+                Log.d("PROVIDER", "ADDED")
+            }
             else -> 0
         }
         context?.contentResolver?.notifyChange(CONTENT_URI, null)
@@ -74,7 +82,7 @@ class FavoriteProvider : ContentProvider() {
     }
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
-        val deleted: Int = when (USER_ID) {
+        val deleted: Int = when (USERNAME) {
             sUriMatcher.match(uri) -> userHelper.deleteByUsername(uri.lastPathSegment.toString())
             else -> 0
         }
