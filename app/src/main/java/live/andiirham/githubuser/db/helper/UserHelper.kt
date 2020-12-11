@@ -27,11 +27,6 @@ class UserHelper(context: Context) {
         database = databaseHelper.writableDatabase
     }
 
-    fun close() {
-        databaseHelper.close()
-        if (database.isOpen) database.close()
-    }
-
     // get all data
     fun queryAll(): Cursor {
         return database.query(
@@ -50,7 +45,7 @@ class UserHelper(context: Context) {
         return database.query(
             DATABASE_TABLE,
             null,
-            "${COLUMN_NAME_USERNAME} = ?",
+            "$COLUMN_NAME_USERNAME = ?",
             arrayOf(id),
             null,
             null,

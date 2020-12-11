@@ -4,12 +4,10 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.provider.BaseColumns
 import live.andiirham.githubuserconsumer.db.UserContract.UserColumns.Companion.COLUMN_NAME_AVATAR_URL
 import live.andiirham.githubuserconsumer.db.UserContract.UserColumns.Companion.COLUMN_NAME_URL
 import live.andiirham.githubuserconsumer.db.UserContract.UserColumns.Companion.COLUMN_NAME_USERNAME
 import live.andiirham.githubuserconsumer.db.UserContract.UserColumns.Companion.TABLE_NAME
-import live.andiirham.githubuserconsumer.db.UserContract.UserColumns.Companion._ID
 import live.andiirham.githubuserconsumer.db.entity.User
 import java.sql.SQLException
 
@@ -46,7 +44,7 @@ class UserHelper(context: Context) {
             null,
             null,
             null,
-            "$_ID DESC",
+            "$COLUMN_NAME_USERNAME DESC",
             null
         )
     }
@@ -78,12 +76,12 @@ class UserHelper(context: Context) {
         return arrayList
     }
 
-    fun queryById(id: String): Cursor {
+    fun queryById(username: String): Cursor {
         return database.query(
             DATABASE_TABLE,
             null,
-            "${BaseColumns._ID} = ?",
-            arrayOf(id),
+            "${COLUMN_NAME_USERNAME} = ?",
+            arrayOf(username),
             null,
             null,
             null,
@@ -104,10 +102,10 @@ class UserHelper(context: Context) {
         return database.insert(DATABASE_TABLE, null, args)
     }
 
-    fun deleteByUsername(id: String): Int {
+    fun deleteByUsername(username: String): Int {
         return database.delete(
             TABLE_NAME,
-            "$_ID = '$id'",
+            "${COLUMN_NAME_USERNAME}E = '$username'",
             null
         )
     }

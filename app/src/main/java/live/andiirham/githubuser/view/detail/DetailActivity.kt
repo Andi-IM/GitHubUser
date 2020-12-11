@@ -103,7 +103,6 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
             } else {
                 if (isDBExist) {
                     contentResolver.delete(uriWithUname, null, null)
-                    finish()
                 }
             }
             setFavoriteStatus(favoriteStatus)

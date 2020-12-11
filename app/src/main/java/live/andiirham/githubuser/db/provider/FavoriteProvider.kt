@@ -63,11 +63,8 @@ class FavoriteProvider : ContentProvider() {
     }
 
     override fun insert(uri: Uri, contentValues: ContentValues?): Uri? {
-        val added: Int = when (USER) {
-            sUriMatcher.match(uri) -> {
-                userHelper.insert(contentValues)
-                Log.d("PROVIDER", "ADDED")
-            }
+        val added: Long = when (USER) {
+            sUriMatcher.match(uri) -> userHelper.insert(contentValues)
             else -> 0
         }
         context?.contentResolver?.notifyChange(CONTENT_URI, null)
@@ -83,7 +80,16 @@ class FavoriteProvider : ContentProvider() {
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
         val deleted: Int = when (USERNAME) {
-            sUriMatcher.match(uri) -> userHelper.deleteByUsername(uri.lastPathSegment.toString())
+            sUriMatcher.match(uri) -> {
+                // a tricky path to parsing a username ...
+                // its same thing with query to get username
+                // hope to feedback for more efficient solution
+
+                val path = uri.path
+                val getUsername = path!!.split("/").toTypedArray()
+                val username = getUsername[2]
+                userHelper.deleteByUsername(username)
+            }
             else -> 0
         }
         context?.contentResolver?.notifyChange(CONTENT_URI, null)

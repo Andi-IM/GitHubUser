@@ -4,7 +4,6 @@ import android.database.Cursor
 import live.andiirham.githubuserconsumer.db.UserContract.UserColumns.Companion.COLUMN_NAME_AVATAR_URL
 import live.andiirham.githubuserconsumer.db.UserContract.UserColumns.Companion.COLUMN_NAME_URL
 import live.andiirham.githubuserconsumer.db.UserContract.UserColumns.Companion.COLUMN_NAME_USERNAME
-import live.andiirham.githubuserconsumer.db.UserContract.UserColumns.Companion._ID
 import live.andiirham.githubuserconsumer.db.entity.User
 
 object MappingHelper {
@@ -13,11 +12,10 @@ object MappingHelper {
 
         cursor?.apply {
             while (moveToNext()) {
-                val id = getInt(getColumnIndexOrThrow(_ID))
                 val username = getString(getColumnIndexOrThrow(COLUMN_NAME_USERNAME))
                 val avatarUrl = getString(getColumnIndexOrThrow(COLUMN_NAME_AVATAR_URL))
                 val url = getString(getColumnIndexOrThrow(COLUMN_NAME_URL))
-                userList.add(User(id, username, avatarUrl, url))
+                userList.add(User(username, avatarUrl, url))
             }
         }
         return userList
@@ -27,11 +25,10 @@ object MappingHelper {
         var user = User()
         favoritesCursor?.apply {
             moveToFirst()
-            val id = getInt(getColumnIndexOrThrow(_ID))
             val username = getString(getColumnIndexOrThrow(COLUMN_NAME_USERNAME))
             val avatarUrl = getString(getColumnIndexOrThrow(COLUMN_NAME_AVATAR_URL))
             val url = getString(getColumnIndexOrThrow(COLUMN_NAME_URL))
-            user = User(id, username, avatarUrl, url)
+            user = User(username, avatarUrl, url)
         }
         return user
     }

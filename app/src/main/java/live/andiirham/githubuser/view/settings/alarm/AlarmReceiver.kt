@@ -33,7 +33,6 @@ class AlarmReceiver : BroadcastReceiver() {
     }
 
     private fun showAlarmNotification(context: Context, message: String) {
-        val NOTIFICATION_ID = 1
         val channelD = "Channel_1"
         val channelName = "DailyReminder channel"
 
